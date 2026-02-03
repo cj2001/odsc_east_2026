@@ -66,10 +66,6 @@ Open your browser to: **http://localhost:8888**
 
 (No password required)
 
-### 8. Run Setup Check
-
-Open and run the `00_setup_check.ipynb` notebook to verify everything works.
-
 ## Workshop URLs
 
 Keep these tabs open during the workshop:
@@ -105,88 +101,3 @@ Keep these tabs open during the workshop:
 1. Click "Containers"
 2. See CPU and Memory usage in real-time
 
-## Adding Data Sources
-
-Before loading any data, you need to configure your data sources. Run this in a notebook:
-```python
-import grpc
-from senzing_grpc import G2ConfigGrpc
-
-# Connect to Senzing
-channel = grpc.insecure_channel('senzing:8261')
-g2_config = G2ConfigGrpc(channel)
-
-# Add your data sources
-g2_config.addDataSource("CUSTOMERS")
-g2_config.addDataSource("REFERENCE") 
-g2_config.addDataSource("WATCHLIST")
-g2_config.save()
-```
-
-## Troubleshooting
-
-### Problem: Senzing won't start or gives database errors
-
-**Via Portainer**:
-1. Go to Containers
-2. Select `erkg_senzing`
-3. Click "Logs" to see what went wrong
-
-**Via Command Line**:
-```bash
-docker-compose down -v
-docker-compose up -d postgres
-# Wait 10 seconds
-# Run the initialization command from Step 4 again
-docker-compose up -d
-```
-
-### Problem: "Connection refused" errors in notebooks
-
-**Via Portainer**:
-1. Check all containers are "running" (green)
-2. Click on each container and view logs for errors
-
-**Via Command Line**:
-```bash
-docker-compose restart
-docker-compose ps
-```
-
-### Problem: Can't connect to JupyterLab
-
-**Via Portainer**:
-1. Click on `erkg_jupyter` container
-2. Click "Logs"
-3. Look for "Jupyter Server is running at http://0.0.0.0:8888"
-
-**Via Command Line**:
-```bash
-docker-compose logs jupyter
-```
-
-### Problem: Container using too much memory
-
-**Via Portainer**:
-1. View resource usage in Containers list
-2. If a container is using >4GB, restart it
-3. Check logs to see if there's a memory leak
-
-### Stop Everything
-```bash
-docker-compose down
-```
-
-### Reset Everything (including all data)
-```bash
-docker-compose down -v
-```
-
-**⚠️ WARNING**: This will delete:
-- All loaded entity resolution data
-- LanceDB vector store
-- Portainer settings (you'll need to create admin account again)
-
-## Workshop Network Name
-
-Your docker network is named `odsc_east_2026_default` (based on the directory name).
