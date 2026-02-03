@@ -1,0 +1,110 @@
+version: '3.8'
+
+services:
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: erkg_portainer
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - portainer_data:/data
+    ports:
+      - "9000:9000"
+      - "9443:9443"
+
+  postgres:
+    image: postgres:15
+    container_name: erkg_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: workshop
+      POSTGRES_DB: erkg
+    ports:
+      - "5436:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    # Apply PostgreSQL tuning for Senzing
+    command: >
+      postgres
+      -c shared_buffers=256MB
+      -c effective_cache_size=1GB
+      -c maintenance_work_mem=128MB
+      -c checkpoint_completion_target=0.9
+      -c wal_buffers=16MB
+      -c default_statistics_target=100
+      -c random_page_cost=1.1
+
+  senzing:
+    image: senzing/serve-grpc:latest
+    container_name: erkg_senzing
+    ports:
+      - "8261:8261"
+    environment:
+      SENZING_ENGINE_CONFIGURATION_JSON: >
+        {
+          "PIPELINE": {
+            "CONFIGPATH": "/etc/opt/senzing",
+            "RESOURCEPATH": "/opt/senzing/er/resources",
+            "SUPPORTPATH": "/opt/senzing/data"
+          },
+          "SQL": {
+            "CONNECTION": "postgresql://postgres:workshop@postgres:5432/erkg"
+          }
+        }
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  jupyter:
+    build: .
+    container_name: erkg_jupyter
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./notebooks:/workspace/notebooks
+      - ./data:/workspace/data
+      - lancedb_data:/workspace/lancedb_data
+    environment:
+      JUPYTER_ENABLE_LAB: "yes"
+      # Senzing connection info for notebooks
+      SENZING_GRPC_HOST: senzing
+      SENZING_GRPC_PORT: 8261
+      # Database connection info for notebooks
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: workshop
+      POSTGRES_DB: erkg
+      # Full Senzing config for any direct SDK usage
+      SENZING_ENGINE_CONFIGURATION_JSON: >
+        {
+          "PIPELINE": {
+            "CONFIGPATH": "/etc/opt/senzing",
+            "RESOURCEPATH": "/opt/senzing/er/resources",
+            "SUPPORTPATH": "/opt/senzing/data"
+          },
+          "SQL": {
+            "CONNECTION": "postgresql://postgres:workshop@postgres:5432/erkg"
+          }
+        }
+    depends_on:
+      - senzing
+      - postgres
+    restart: unless-stopped
+    command: >
+      bash -c "jupyter lab --ip=0.0.0.0 --port=8888 --no-browser 
+      --allow-root --NotebookApp.token='' --NotebookApp.password=''"
+
+volumes:
+  portainer_data:
+  postgres_data:
+  lancedb_data:
