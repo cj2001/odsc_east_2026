@@ -5,14 +5,12 @@
 ## Prerequisites
 
 - Docker Desktop installed and running
-- At least 8GB RAM available
-- 10GB free disk space
 
 ## Setup Steps
 
 ### 1. Clone the Repository
 ```bash
-git clone <repository-url>
+git clone https://github.com/cj2001/odsc_east_2026.git
 cd odsc_east_2026
 ```
 
@@ -52,14 +50,6 @@ All cells should pass with ✅.
 
 ## Troubleshooting
 
-**If Senzing container keeps restarting:**
-```bash
-# Check if initialization is needed
-docker-compose logs senzing | grep "sys_vars"
-
-# If you see "relation sys_vars does not exist", run Step 3 again
-```
-
 **Check all containers are running:**
 ```bash
 docker-compose ps
@@ -83,8 +73,3 @@ Then repeat steps 2-3.
 
 - No password required for JupyterLab
 - Network name is based on directory: `<directory-name>_erkg-network`
-- If you renamed the directory, update the network name in Step 3
-
----
-
-**Ready?** Open http://localhost:8888 and start with `00_setup_check.ipynb`! 🚀
