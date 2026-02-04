@@ -1,103 +1,90 @@
 # Workshop Setup Instructions
 
+# Workshop Setup
+
 ## Prerequisites
-- Docker Desktop installed ([download here](https://docs.docker.com/get-docker/))
+
+- Docker Desktop installed and running
 - At least 8GB RAM available
 - 10GB free disk space
 
 ## Setup Steps
 
-### 1. Clone and Prepare
+### 1. Clone the Repository
 ```bash
-git clone <your-repo-url>
+git clone <repository-url>
 cd odsc_east_2026
-mkdir -p notebooks data
 ```
 
-### 2. Start All Supporting Services
-```bash
-docker-compose up -d portainer postgres
-```
-
-Wait about 10 seconds for PostgreSQL to be ready.
-
-### 3. Set Up Portainer (First Time Only)
-
-Open your browser to: **http://localhost:9000**
-
-1. Create an admin account (username: admin, password: your choice)
-2. Select "Get Started" to connect to your local Docker environment
-3. Click on "local" to see your containers
-
-**💡 TIP**: Keep Portainer open in a browser tab during the workshop to monitor containers!
-
-### 4. Initialize Senzing Database (ONE-TIME ONLY)
-
-This step sets up the Senzing schema and configuration in PostgreSQL:
-```bash
-docker run --rm --network odsc_east_2026_default \
-  --env SENZING_TOOLS_COMMAND=init-database \
-  --env SENZING_TOOLS_DATABASE_URL="postgresql://postgres:workshop@postgres:5432/erkg?sslmode=disable" \
-  senzing/senzing-tools
-```
-
-You should see output ending with "Sent SQL in ... to database".
-
-**⚠️ IMPORTANT**: Only run this initialization command ONCE. Running it multiple times may cause issues.
-
-### 5. Start Remaining Services
+### 2. Start All Services
 ```bash
 docker-compose up -d
 ```
 
-### 6. Verify Services in Portainer
+Wait about 15-20 seconds for all services to start.
 
-In Portainer:
-1. Click on "Containers" in the left sidebar
-2. You should see 4 running containers:
-   - `erkg_portainer` (green)
-   - `erkg_postgres` (green)
-   - `erkg_senzing` (green)
-   - `erkg_jupyter` (green)
+### 3. Initialize Senzing Database (ONE-TIME ONLY)
 
-### 7. Open JupyterLab
+⚠️ **Run this once before using the notebooks:**
+```bash
+chmod +x scripts/init_database.sh
+./scripts/init_database.sh
+```
 
-Open your browser to: **http://localhost:8888**
+You should see:
+```
+✅ SUCCESS!
+Senzing database initialized successfully.
+```
 
-(No password required)
+### 4. Verify Setup
+
+Open **http://localhost:8888** in your browser and run the `00_setup_check.ipynb` notebook.
+
+All cells should pass with ✅.
 
 ## Workshop URLs
 
-Keep these tabs open during the workshop:
+| Service | URL |
+|---------|-----|
+| JupyterLab | http://localhost:8888 |
+| Portainer (optional) | http://localhost:9000 |
 
-| Service | URL | Purpose |
-|---------|-----|---------|
-| **Portainer** | http://localhost:9000 | Monitor containers, view logs |
-| **JupyterLab** | http://localhost:8888 | Run workshop notebooks |
-| **PostgreSQL** | localhost:5436 | Database (for external tools like pgAdmin/DBeaver) |
+## Troubleshooting
 
-**Note:** PostgreSQL is exposed on port 5436 (not the default 5432) to avoid conflicts with local PostgreSQL installations. Internal Docker connections still use port 5432.
+**If Senzing container keeps restarting:**
+```bash
+# Check if initialization is needed
+docker-compose logs senzing | grep "sys_vars"
 
-## Using Portainer During the Workshop
+# If you see "relation sys_vars does not exist", run Step 3 again
+```
 
-### View Container Logs
-1. Click "Containers" in left sidebar
-2. Click on any container name (e.g., `erkg_senzing`)
-3. Click "Logs" icon
-4. Toggle "Auto-refresh" to see live logs
+**Check all containers are running:**
+```bash
+docker-compose ps
+```
 
-### Check Container Health
-1. Click "Containers"
-2. Look at the "Status" column
-3. Green "running" = healthy
-4. Red "exited" = problem (click to see logs)
+All four containers should show "Up" status.
 
-### Restart a Container
-1. Click "Containers"
-2. Check the box next to the container
-3. Click "Restart" at the top
+**Stop everything:**
+```bash
+docker-compose down
+```
 
-### View Resource Usage
-1. Click "Containers"
-2. See CPU and Memory usage in real-time
+**Reset everything (deletes all data):**
+```bash
+docker-compose down -v
+```
 
+Then repeat steps 2-3.
+
+## Notes
+
+- No password required for JupyterLab
+- Network name is based on directory: `<directory-name>_erkg-network`
+- If you renamed the directory, update the network name in Step 3
+
+---
+
+**Ready?** Open http://localhost:8888 and start with `00_setup_check.ipynb`! 🚀

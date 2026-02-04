@@ -1,5 +1,9 @@
 version: '3.8'
 
+networks:
+  erkg-network:
+    driver: bridge
+
 services:
   portainer:
     image: portainer/portainer-ce:latest
@@ -13,6 +17,8 @@ services:
     ports:
       - "9000:9000"
       - "9443:9443"
+    networks:
+      - erkg-network
 
   postgres:
     image: postgres:15
@@ -31,7 +37,8 @@ services:
       timeout: 5s
       retries: 5
     restart: unless-stopped
-    # Apply PostgreSQL tuning for Senzing
+    networks:
+      - erkg-network
     command: >
       postgres
       -c shared_buffers=256MB
@@ -56,17 +63,20 @@ services:
             "SUPPORTPATH": "/opt/senzing/data"
           },
           "SQL": {
-            "CONNECTION": "postgresql://postgres:workshop@postgres:5432/erkg"
+            "CONNECTION": "postgresql://postgres:workshop@postgres:5432:erkg?sslmode=disable"
           }
         }
     depends_on:
       postgres:
         condition: service_healthy
     restart: unless-stopped
+    networks:
+      - erkg-network
 
   jupyter:
     build: .
     container_name: erkg_jupyter
+    user: "${UID:-1000}:${GID:-1000}"  # Run as current user
     ports:
       - "8888:8888"
     volumes:
@@ -75,6 +85,10 @@ services:
       - lancedb_data:/workspace/lancedb_data
     environment:
       JUPYTER_ENABLE_LAB: "yes"
+      NB_UID: "${UID:-1000}"
+      NB_GID: "${GID:-1000}"
+      CHOWN_HOME: "yes"
+      CHOWN_HOME_OPTS: "-R"
       # Senzing connection info for notebooks
       SENZING_GRPC_HOST: senzing
       SENZING_GRPC_PORT: 8261
@@ -93,13 +107,15 @@ services:
             "SUPPORTPATH": "/opt/senzing/data"
           },
           "SQL": {
-            "CONNECTION": "postgresql://postgres:workshop@postgres:5432/erkg"
+            "CONNECTION": "postgresql://postgres:workshop@postgres:5432:erkg?sslmode=disable"
           }
         }
     depends_on:
       - senzing
       - postgres
     restart: unless-stopped
+    networks:
+      - erkg-network
     command: >
       bash -c "jupyter lab --ip=0.0.0.0 --port=8888 --no-browser 
       --allow-root --NotebookApp.token='' --NotebookApp.password=''"
