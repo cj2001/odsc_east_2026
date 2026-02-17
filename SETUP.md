@@ -1,7 +1,5 @@
 # Workshop Setup Instructions
 
-# Workshop Setup
-
 ## Prerequisites
 
 - Docker Desktop installed and running

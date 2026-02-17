@@ -76,7 +76,7 @@ services:
   jupyter:
     build: .
     container_name: erkg_jupyter
-    user: "${UID:-1000}:${GID:-1000}"  # Run as current user
+    user: "${UID:-1000}:${GID:-1000}"
     ports:
       - "8888:8888"
     volumes:
@@ -89,16 +89,18 @@ services:
       NB_GID: "${GID:-1000}"
       CHOWN_HOME: "yes"
       CHOWN_HOME_OPTS: "-R"
-      # Senzing connection info for notebooks
+      # Senzing connection info
       SENZING_GRPC_HOST: senzing
       SENZING_GRPC_PORT: 8261
-      # Database connection info for notebooks
+      # Database connection info
       POSTGRES_HOST: postgres
       POSTGRES_PORT: 5432
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: workshop
       POSTGRES_DB: erkg
-      # Full Senzing config for any direct SDK usage
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      # Senzing engine config
       SENZING_ENGINE_CONFIGURATION_JSON: >
         {
           "PIPELINE": {
@@ -110,6 +112,9 @@ services:
             "CONNECTION": "postgresql://postgres:workshop@postgres:5432:erkg?sslmode=disable"
           }
         }
+      # LLM API Keys (optional - can be set via .env file)
+      # ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      # OPENAI_API_KEY: ${OPENAI_API_KEY:-}
     depends_on:
       - senzing
       - postgres
