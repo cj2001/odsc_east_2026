@@ -21,7 +21,11 @@ RUN pip install --no-cache-dir \
     pandas \
     networkx \
     pyvis \
-    python-dotenv
+    python-dotenv \
+    sentence-transformers \
+    dspy-ai \
+    anthropic \
+    openai
 
 # Set working directory
 WORKDIR /workspace
