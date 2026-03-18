@@ -208,4 +208,5 @@ __marimo__/
 
 # Custom to this repo
 notebooks/OLD/
-data/
+.mcp.json
+mcp.md
