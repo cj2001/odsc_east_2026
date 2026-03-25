@@ -210,3 +210,4 @@ __marimo__/
 notebooks/OLD/
 .mcp.json
 mcp.md
+*.html
