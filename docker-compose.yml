@@ -78,7 +78,7 @@ services:
     container_name: erkg_jupyter
     user: "${UID:-1000}:${GID:-1000}"
     ports:
-      - "8888:8888"
+      - "18888:8888"
     volumes:
       - ./notebooks:/workspace/notebooks
       - ./data:/workspace/data
