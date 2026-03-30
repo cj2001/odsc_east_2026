@@ -39,6 +39,22 @@ Open **http://localhost:18888** in your browser and run the `00_setup_check.ipyn
 
 All cells should pass with ✅.
 
+### 5. (OPTIONAL) Configure the Senzing MCP Server
+
+If you are using Claude Code, you can connect to the Senzing MCP server for interactive assistance with entity resolution tasks. This requires Node.js 18+ and npm.
+
+From the repo root, run:
+```bash
+python scripts/setup_mcp.py
+```
+
+This will:
+- Locate your Node.js and npx binaries (including common version-manager paths like nvm, fnm, and volta)
+- Verify that Node.js 18+ is installed
+- Generate a `.mcp.json` file in the repo root
+
+If you already have a `.mcp.json` file, the script will prompt you before overwriting it.
+
 ## Workshop URLs
 
 | Service | URL |
