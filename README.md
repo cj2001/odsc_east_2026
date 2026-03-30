@@ -10,6 +10,8 @@ Workshop materials for building entity-resolved knowledge graphs (ERKGs) and usi
 - Docker
 - Python 3.11+
 - API key for Anthropic and/or OpenAI
+- OPTIONAL: Claude Code (for accessing Senzing MCP server)
+- OPTIONAL: Node.js 18+ and npm (required to run the Senzing MCP server)
 
 ## File Descriptions
 
@@ -22,6 +24,8 @@ Workshop materials for building entity-resolved knowledge graphs (ERKGs) and usi
 - **[Dockerfile](Dockerfile)**: Builds the JupyterLab container from `jupyter/scipy-notebook`, adding system build tools and all required Python packages: `senzing-grpc`, `psycopg2-binary`, `lancedb`, `pandas`, `networkx`, `pyvis`, `sentence-transformers`, `dspy-ai`, `anthropic`, and `openai`.
 
 - **[scripts/init_database.sh](scripts/init_database.sh)**: One-time initialization script that sets up the PostgreSQL database schema.  Auto-detects the Docker network, checks whether the database is already initialized, and runs a container to initialize it, if needed.
+
+- **[scripts/setup_mcp.py](scripts/setup_mcp.py)**: Generates the `.mcp.json` configuration file for the Senzing MCP server.  Locates the Node.js and npx binaries (checking common version-manager paths like nvm, fnm, and volta), verifies Node.js 18+, and writes the MCP server config to the repo root.
 
 ### Notebooks
 
