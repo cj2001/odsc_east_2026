@@ -10,6 +10,7 @@ Workshop materials for building entity-resolved knowledge graphs (ERKGs) and usi
 - Docker
 - Python 3.11+
 - API key for Anthropic and/or OpenAI
+- PowerShell (Windows users only)
 - OPTIONAL: Claude Code (for accessing Senzing MCP server)
 - OPTIONAL: Node.js 18+ and npm (required to run the Senzing MCP server)
 
