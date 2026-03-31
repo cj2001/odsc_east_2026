@@ -1,7 +1,7 @@
 # ODSC East 2026 Workshop: Entity Resolved Knowledge Graphs, The Foundation for Effective GraphRAG
 ### Clair J. Sullivan, PhD
 ### clair@clairsullivan.com
-#### Last modified: March 30, 2026
+#### Last modified: March 31, 2026
 
 Workshop materials for building entity-resolved knowledge graphs (ERKGs) and using them to improve Retrieval-Augmented Generation (RAG) pipelines. The workshop uses Senzing for entity resolution, LanceDB for vector storage, NetworkX/PyVis for graph visualization, and multiple LLM providers (Anthropic Claude, OpenAI) for the RAG chatbot.
 
