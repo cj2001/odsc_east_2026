@@ -9,10 +9,19 @@ Workshop materials for building entity-resolved knowledge graphs (ERKGs) and usi
 
 - Docker
 - Python 3.11+
-- API key for Anthropic and/or OpenAI
+- API key for [Anthropic](https://platform.claude.com/) and/or [OpenAI](https://platform.openai.com/)
 - PowerShell (Windows users only)
 - OPTIONAL: Claude Code (for accessing Senzing MCP server)
 - OPTIONAL: Node.js 18+ and npm (required to run the Senzing MCP server)
+
+## BEFORE YOU BEGIN
+
+You need to set your API key(s) for Anthropic and/or OpenAI in a `.env` file that you will need to create before running the notebooks.  The file should look like this:
+
+```
+ANTHROPIC_API_KEY=your-anthropic-key-here
+OPENAI_API_KEY=your-openai-key-here
+```
 
 ## File Descriptions
 

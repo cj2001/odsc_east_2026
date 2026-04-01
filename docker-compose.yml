@@ -83,6 +83,8 @@ services:
       - ./notebooks:/workspace/notebooks
       - ./data:/workspace/data
       - lancedb_data:/workspace/lancedb_data
+    env_file:
+      - .env
     environment:
       JUPYTER_ENABLE_LAB: "yes"
       NB_UID: "${UID:-1000}"
@@ -98,8 +100,6 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: workshop
       POSTGRES_DB: erkg
-      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
-      OPENAI_API_KEY: ${OPENAI_API_KEY}
       # Senzing engine config
       SENZING_ENGINE_CONFIGURATION_JSON: >
         {
@@ -112,9 +112,6 @@ services:
             "CONNECTION": "postgresql://postgres:workshop@postgres:5432:erkg?sslmode=disable"
           }
         }
-      # LLM API Keys (optional - can be set via .env file)
-      # ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
-      # OPENAI_API_KEY: ${OPENAI_API_KEY:-}
     depends_on:
       - senzing
       - postgres
