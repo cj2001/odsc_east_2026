@@ -63,7 +63,7 @@ Senzing database initialized successfully.
 
 ### 4. Verify Setup
 
-Open **http://localhost:18888** in your browser and run the `00_setup_check.ipynb` notebook.  (Note that this port is different than the default Jupyter port so as not to conflict with any existing Jupyter installations on your machine.)
+Open **http://localhost:18888** in your browser and run the `00_test_setup.ipynb` notebook.  (Note that this port is different than the default Jupyter port so as not to conflict with any existing Jupyter installations on your machine.)
 
 All cells should pass with ✅.
 
