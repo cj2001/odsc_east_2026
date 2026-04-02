@@ -2,8 +2,12 @@
 
 ## Prerequisites
 
-- Docker Desktop installed and running
-- **Windows users:** PowerShell 5.1+ (included with Windows 10/11) or [PowerShell 7+](https://github.com/PowerShell/PowerShell)
+- Docker
+- Python 3.11+
+- API key for [Anthropic](https://platform.claude.com/) and/or [OpenAI](https://platform.openai.com/)
+- PowerShell (Windows users only)
+- OPTIONAL: Claude Code (for accessing Senzing MCP server)
+- OPTIONAL: Node.js 18+ and npm (required to run the Senzing MCP server)
 
 ## Setup Steps
 
