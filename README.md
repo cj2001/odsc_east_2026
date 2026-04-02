@@ -39,7 +39,7 @@ OPENAI_API_KEY=your-openai-key-here
 
 ### Notebooks
 
-Run these in order (`00` through `08`). The `08_*` notebooks are independent alternatives — pick the one matching your preferred LLM provider / framework.
+Run these in order (`00` through `08`). The two `08_*` notebooks are independent alternatives — pick the one matching your preferred framework.
 
 - **[00_test_setup.ipynb](notebooks/00_test_setup.ipynb)**: Verifies the workshop environment: tests PostgreSQL connectivity, Senzing gRPC reachability, license validity, configuration management, LanceDB, NetworkX, and PyVis.  Also registers the CUSTOMERS, REFERENCE, and WATCHLIST data sources and runs a round-trip test (add record, retrieve entity, search by attributes, delete record).
 
@@ -57,10 +57,7 @@ Run these in order (`00` through `08`). The `08_*` notebooks are independent alt
 
 - **[07_vectorize_ER_data_v4.ipynb](notebooks/07_vectorize_ER_data_v4.ipynb)**: Creates vector embeddings for all 196 resolved entities.  Exports entity data, builds text descriptions (name, type, data sources, address, identifiers, risk topics), embeds them with the `all-MiniLM-L6-v2` sentence transformer (384 dimensions), and stores everything in LanceDB.  Drops all existing LanceDB tables before writing to ensure a clean state.
 
-- **[08_anthropic_rag_v4.ipynb](notebooks/08_anthropic_rag_v4.ipynb)**: ERKG-enhanced RAG using the Anthropic API directly.  Combines vector search (LanceDB) with knowledge graph expansion (NetworkX) to retrieve not just matching entities but also their graph neighbors and relationships, then queries Claude Sonnet 4.5.  Interactive chatbot session for exploring corporate ownership and sanctions data.
+- **[08_erkg_v4.ipynb](notebooks/08_erkg_v4.ipynb)**: ERKG-enhanced RAG using the Anthropic and OpenAI APIs directly.  Combines vector search (LanceDB) with knowledge graph expansion (NetworkX) to retrieve not just matching entities but also their graph neighbors and relationships, then queries the selected LLM.  Supports both Claude Sonnet 4.5 and OpenAI GPT 5.4 nano via a `provider` parameter.  Interactive chatbot session for exploring corporate ownership and sanctions data.
 
-- **[08_openai_rag_v4.ipynb](notebooks/08_openai_rag_v4.ipynb)**: ERKG-enhanced RAG using the OpenAI API directly.  Same architecture as the Anthropic version (vector search + graph expansion) but uses OpenAI GPT 5.4 nano as the LLM backend.  Interactive chatbot session included.
+- **[08_dspy_erkg_v4.ipynb](notebooks/08_dspy_erkg_v4.ipynb)**: ERKG-enhanced RAG using DSPy with chain-of-thought reasoning.  Same retrieval pipeline (vector search + graph expansion) as `08_erkg_v4.ipynb` but uses DSPy's `ChainOfThought` module for structured reasoning over the knowledge graph context.  Supports both Anthropic (Claude) and OpenAI (GPT) backends via a `provider` parameter.
 
-- **[08_dspy_anthropic_rag_v4.ipynb](notebooks/08_dspy_anthropic_rag_v4.ipynb)**: ERKG-enhanced RAG using DSPy with Claude as the backend.  Uses DSPy's `ChainOfThought` module for structured reasoning over the knowledge graph context.  Same retrieval pipeline (vector search + graph expansion) with DSPy managing the prompt engineering.
-
-- **[08__dspy_openai_rag_v4.ipynb](notebooks/08__dspy_openai_rag_v4.ipynb)**: ERKG-enhanced RAG using DSPy with OpenAI GPT as the backend.  Same as the DSPy/Anthropic version but configured for the OpenAI API.  Demonstrates that the DSPy abstraction makes it easy to swap LLM providers.
