@@ -1,7 +1,7 @@
 # ODSC East 2026 Workshop: Entity Resolved Knowledge Graphs, The Foundation for Effective GraphRAG
 ### Clair J. Sullivan, PhD
 ### clair@clairsullivan.com
-#### Last modified: April 2, 2026
+#### Last modified: April 3, 2026
 
 Workshop materials for building entity-resolved knowledge graphs (ERKGs) and using them to improve Retrieval-Augmented Generation (RAG) pipelines. The workshop uses Senzing for entity resolution, LanceDB for vector storage, NetworkX/PyVis for graph visualization, and multiple LLM providers (Anthropic Claude, OpenAI) for the RAG chatbot.
 
@@ -37,6 +37,8 @@ OPENAI_API_KEY=your-openai-key-here
 
 - **[scripts/setup_mcp.py](scripts/setup_mcp.py)**: Generates the `.mcp.json` configuration file for the Senzing MCP server.  Locates the Node.js and npx binaries (checking common version-manager paths like nvm, fnm, and volta), verifies Node.js 18+, and writes the MCP server config to the repo root.
 
+- **[slides/erkg_workshop_2026.pdf](slides/erkg_workshop_2026.pdf)**: Slide deck for the workshop presentation.  
+
 ### Notebooks
 
 Run these in order (`00` through `08`). The two `08_*` notebooks are independent alternatives — pick the one matching your preferred framework.
@@ -60,4 +62,10 @@ Run these in order (`00` through `08`). The two `08_*` notebooks are independent
 - **[08_erkg_v4.ipynb](notebooks/08_erkg_v4.ipynb)**: ERKG-enhanced RAG using the Anthropic and OpenAI APIs directly.  Combines vector search (LanceDB) with knowledge graph expansion (NetworkX) to retrieve not just matching entities but also their graph neighbors and relationships, then queries the selected LLM.  Supports both Claude Sonnet 4.5 and OpenAI GPT 5.4 nano via a `provider` parameter.  Interactive chatbot session for exploring corporate ownership and sanctions data.
 
 - **[08_dspy_erkg_v4.ipynb](notebooks/08_dspy_erkg_v4.ipynb)**: ERKG-enhanced RAG using DSPy with chain-of-thought reasoning.  Same retrieval pipeline (vector search + graph expansion) as `08_erkg_v4.ipynb` but uses DSPy's `ChainOfThought` module for structured reasoning over the knowledge graph context.  Supports both Anthropic (Claude) and OpenAI (GPT) backends via a `provider` parameter.
+
+## Useful Resources
+
+- [Blog post associated with this workshop](https://opendatascience.com/entity-resolved-knowledge-graphs-the-foundation-for-effective-graphrag/)
+- [Senzing Documentation](https://senzing.com/docs/)
+- [Senzing Entity Specification Guide](https://www.senzing.com/docs/entity_specification/)
 
