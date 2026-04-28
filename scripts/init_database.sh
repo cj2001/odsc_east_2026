@@ -56,7 +56,7 @@ if [ $? -eq 0 ]; then
     echo "Senzing database initialized successfully."
     echo ""
     echo "Next steps:"
-    echo "1. Open http://localhost:8888"
+    echo "1. Open http://localhost:18888"
     echo "2. Run notebooks/00_setup_check.ipynb"
     echo ""
 else
